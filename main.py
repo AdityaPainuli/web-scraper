@@ -5,6 +5,7 @@ from supabase import create_client, Client
 import requests
 from dotenv import load_dotenv
 import os
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 SUPABASE_URL = os.getenv("SUPABASE_URL")
@@ -13,6 +14,17 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # ---- FastAPI App ----
 app = FastAPI()
+
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change to frontend domain in prod
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # ---- Request Model ----
 class CrawlRequest(BaseModel):
